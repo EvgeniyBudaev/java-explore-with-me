@@ -14,7 +14,6 @@ import ru.practicum.server.user.dto.NewUserRequestResponse;
 import ru.practicum.server.user.dto.UserBlockCommentStatusUpd;
 import ru.practicum.server.user.enums.UserBanAction;
 import ru.practicum.server.user.mapper.UserMapper;
-import ru.practicum.server.user.model.QUser;
 import ru.practicum.server.user.model.User;
 import ru.practicum.server.user.repository.UserRepository;
 
@@ -35,9 +34,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ListNewUserRequestResp getUsers(List<Long> ids, Pageable pageable) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        if (ids != null && !ids.isEmpty()) {
-            booleanBuilder.and(QUser.user.userId.in(ids));
-        }
         Page<User> page;
         if (booleanBuilder.getValue() != null) {
             page = usersRepository.findAll(booleanBuilder.getValue(), pageable);
