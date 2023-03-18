@@ -15,7 +15,6 @@ import ru.practicum.server.event.enums.State;
 import ru.practicum.server.event.enums.StateAction;
 import ru.practicum.server.event.mapper.EventMapper;
 import ru.practicum.server.event.model.Event;
-import ru.practicum.server.event.model.QEvent;
 import ru.practicum.server.event.repository.EventRepository;
 import ru.practicum.server.event.statclient.StatisticClient;
 import ru.practicum.server.handler.exception.AccessException;
@@ -121,7 +120,7 @@ public class EventServiceImp implements EventService {
     @Override
     public ListEventFullDto getEventsByFiltersForAdmin(List<Long> ids, List<String> states, List<Long> categories,
                                                        LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable pageable) {
-        BooleanBuilder booleanBuilder = createQuery(ids, states, categories, rangeStart, rangeEnd);
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
         Page<Event> page;
         if (booleanBuilder.getValue() != null) {
             page = events.findAll(booleanBuilder, pageable);
@@ -228,22 +227,8 @@ public class EventServiceImp implements EventService {
                                                       Boolean onlyAvailable,
                                                       Pageable pageable, HttpServletRequest servlet) {
         statisticClient.postStats(servlet, "ewm-server");
-        BooleanBuilder booleanBuilder = createQuery(null, null, categories, rangeStart, rangeEnd);
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
         Page<Event> page;
-        if (text != null) {
-            booleanBuilder.and(QEvent.event.annotation.likeIgnoreCase(text))
-                    .or(QEvent.event.description.likeIgnoreCase(text));
-        }
-        if (rangeStart == null && rangeEnd == null) {
-            booleanBuilder.and(QEvent.event.eventDate.after(LocalDateTime.now()));
-        }
-        if (onlyAvailable) {
-            booleanBuilder.and((QEvent.event.participantLimit.eq(0)))
-                    .or(QEvent.event.participantLimit.gt(QEvent.event.confirmedRequests));
-        }
-        if (paid != null) {
-            booleanBuilder.and(QEvent.event.paid.eq(paid));
-        }
         if (booleanBuilder.getValue() != null) {
             page = events.findAll(booleanBuilder.getValue(), pageable);
         } else {
@@ -253,31 +238,6 @@ public class EventServiceImp implements EventService {
                 .builder()
                 .events(mapper.mapToListEventShortDto(page.getContent()))
                 .build();
-    }
-
-    private BooleanBuilder createQuery(List<Long> ids, List<String> states, List<Long> categories,
-                                       LocalDateTime rangeStart, LocalDateTime rangeEnd) {
-        BooleanBuilder booleanBuilder = new BooleanBuilder();
-        if (ids != null && !ids.isEmpty()) {
-            booleanBuilder.and(QEvent.event.initiator.userId.in(ids));
-        }
-        if (states != null && !states.isEmpty()) {
-            try {
-                booleanBuilder.and(QEvent.event.state.in(states.stream().map(State::valueOf).collect(Collectors.toList())));
-            } catch (Exception e) {
-                log.info(e.getMessage());
-            }
-        }
-        if (categories != null && !categories.isEmpty()) {
-            booleanBuilder.and(QEvent.event.category.categoryId.in(categories));
-        }
-        if (rangeStart != null) {
-            booleanBuilder.and(QEvent.event.eventDate.after(rangeStart));
-        }
-        if (rangeEnd != null) {
-            booleanBuilder.and(QEvent.event.eventDate.before(rangeEnd));
-        }
-        return booleanBuilder;
     }
 
     private void moderationRequests(List<ParticipationRequestDto> confirmedRequests,

@@ -13,7 +13,6 @@ import ru.practicum.server.compilation.dto.NewCompilationDto;
 import ru.practicum.server.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.server.compilation.mapper.CompilationMapper;
 import ru.practicum.server.compilation.model.Compilation;
-import ru.practicum.server.compilation.model.QCompilation;
 import ru.practicum.server.compilation.repository.CompilationRepository;
 import ru.practicum.server.event.model.Event;
 import ru.practicum.server.event.repository.EventRepository;
@@ -66,9 +65,6 @@ public class CompilationServiceImp implements CompilationService {
     public CompilationDtoList getCompilations(Boolean pinned, Pageable pageable) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         Page<Compilation> page;
-        if (pinned != null) {
-            booleanBuilder.and(QCompilation.compilation.pinned.eq(pinned));
-        }
         if (booleanBuilder.getValue() != null) {
             page = compilations.findAll(booleanBuilder.getValue(), pageable);
         } else {
