@@ -53,9 +53,9 @@ public class EventServiceImp implements EventService {
     @Override
     public EventFullDto addNewEvent(Long userId, NewEventDto eventDto) {
         User user = users.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id=%s was not found", userId)));
         Category category = categories.findById(eventDto.getCategory()).orElseThrow(
-                () -> new NotFoundException("Category with id=" + eventDto.getCategory() + " was not found"));
+                () -> new NotFoundException(String.format("Category with id=%s was not found", eventDto.getCategory())));
         Event newEvent = mapper.mapToEvent(eventDto);
         if (newEvent.getEventDate().isBefore(LocalDateTime.now().minusHours(2))) {
             throw new AccessException("Field: eventDate. Error: должно содержать дату, которая еще не наступила. " +
@@ -76,7 +76,7 @@ public class EventServiceImp implements EventService {
                     .events(mapper.mapToListEventShortDto(events.findAllByInitiatorUserId(userId, pageable)))
                     .build();
         } else {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException(String.format("User with id=%s was not found", userId));
         }
     }
 
@@ -84,9 +84,9 @@ public class EventServiceImp implements EventService {
     public EventFullDto getPrivateUserEvent(Long userId, Long eventId) {
         if (users.existsById(userId)) {
             return mapper.mapToEventFullDto(events.findByEventIdAndInitiatorUserId(eventId, userId)
-                    .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found")));
+                    .orElseThrow(() -> new NotFoundException(String.format("Event with id=%s was not found", eventId))));
         } else {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException(String.format("User with id=%s was not found", userId));
         }
     }
 
@@ -102,18 +102,18 @@ public class EventServiceImp implements EventService {
                 }
             }
             Event event = events.findByEventIdAndInitiatorUserId(eventId, userId)
-                    .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                    .orElseThrow(() -> new NotFoundException(String.format("Event with id=%s was not found", eventId)));
             if (event.getState().equals(State.PUBLISHED)) {
                 throw new AccessException("Only pending or canceled events can be changed");
             }
             if (updateEvent.getCategory() != null) {
                 event.setCategory(categories.findById(updateEvent.getCategory()).orElseThrow(
-                        () -> new NotFoundException("Category with id=" + updateEvent.getCategory() + " was not found")));
+                        () -> new NotFoundException(String.format("Category with id=%s was not found", updateEvent.getCategory()))));
             }
             event.setState(StateAction.getState(updateEvent.getStateAction()));
             return mapper.mapToEventFullDto(events.save(mapper.mapToEvent(updateEvent, event)));
         } else {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException(String.format("User with id=%s was not found", userId));
         }
     }
 
@@ -144,11 +144,11 @@ public class EventServiceImp implements EventService {
             }
         }
         Event event = events.findById(eventId).orElseThrow(
-                () -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                () -> new NotFoundException(String.format("Event with id=%s was not found", eventId)));
         changeEventState(event, updateEvent.getStateAction());
         if (updateEvent.getCategory() != null) {
             event.setCategory(categories.findById(updateEvent.getCategory()).orElseThrow(
-                    () -> new NotFoundException("Category with id=" + updateEvent.getCategory() + " was not found")));
+                    () -> new NotFoundException(String.format("Category with id=%s was not found", updateEvent.getCategory()))));
         }
         return mapper.mapToEventFullDto(events.save(mapper.mapToEvent(updateEvent, event)));
     }
@@ -157,13 +157,13 @@ public class EventServiceImp implements EventService {
     public ParticipationRequestList getUserEventRequests(Long userId, Long eventId) {
         if (users.existsById(userId)) {
             Event event = events.findByEventIdAndInitiatorUserId(eventId, userId)
-                    .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                    .orElseThrow(() -> new NotFoundException(String.format("Event with id=%s was not found", eventId)));
             return ParticipationRequestList
                     .builder()
                     .requests(event.getRequests().stream().map(requestMapper::mapToRequestDto).collect(Collectors.toList()))
                     .build();
         } else {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException(String.format("User with id=%s was not found", userId));
         }
     }
 
@@ -172,7 +172,7 @@ public class EventServiceImp implements EventService {
     public EventRequestStatusUpdateResult approveRequests(Long userId, Long eventId, EventRequestStatusUpdate requests) {
         if (users.existsById(userId)) {
             Event event = events.findByEventIdAndInitiatorUserId(eventId, userId)
-                    .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                    .orElseThrow(() -> new NotFoundException(String.format("Event with id=%s was not found", eventId)));
             if (event.getParticipantLimit() <= event.getConfirmedRequests()) {
                 throw new AccessException("The participant limit has been reached");
             }
@@ -185,7 +185,7 @@ public class EventServiceImp implements EventService {
                     .rejectedRequests(rejectedRequests)
                     .build();
         } else {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException(String.format("User with id=%s was not found", userId));
         }
     }
 
@@ -194,7 +194,7 @@ public class EventServiceImp implements EventService {
     public EventFullDto getEventByIdPublic(Long eventId, HttpServletRequest servlet) {
         statisticClient.postStats(servlet, "ewm-server");
         Event event = events.findByEventIdAndState(eventId, State.PUBLISHED)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Event with id=%s was not found", eventId)));
         event.setViews(statisticClient.getViews(eventId));
         return mapper.mapToEventFullDto(events.save(event));
     }

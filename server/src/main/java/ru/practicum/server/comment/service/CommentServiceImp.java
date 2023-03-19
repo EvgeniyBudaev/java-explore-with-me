@@ -38,13 +38,13 @@ public class CommentServiceImp implements CommentService {
     @Override
     public CommentDtoResponse addComment(Long userId, Long eventId, NewCommentDto newComment) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("User with id=%s was not found", userId)));
         Event event;
         if (user.getAreCommentsBlocked()) {
-            throw new AccessException("A user with id=" + userId + " has comments blocked");
+            throw new AccessException(String.format("A user with id=%s has comments blocked", userId));
         }
         event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Event with id=%s was not found", eventId)));
         if (!event.getState().equals(State.PUBLISHED)) {
             throw new AccessException("It is not possible to add a comment to an event in the status " + event.getState());
         }
@@ -59,8 +59,7 @@ public class CommentServiceImp implements CommentService {
     @Transactional
     public CommentDtoResponse updateCommentUser(Long userId, Long commentId, CommentDtoUpdate updateComment) {
         Comment comment = commentRepository.findByCommentIdAndAuthorUserId(commentId, userId)
-                .orElseThrow(() -> new NotFoundException("Comment with commentId=" + commentId
-                        + " and userId=" + userId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Comment with commentId=%s and userId=%s not found", commentId, userId)));
         if (LocalDateTime.now().isAfter(comment.getCreated().plusHours(2))) {
             throw new CommentException("Сan't edit a comment that was created more than 2 hours ago");
         }
@@ -71,8 +70,7 @@ public class CommentServiceImp implements CommentService {
     @Override
     public void deleteCommentUser(Long commentId, Long userId) {
         Comment comment = commentRepository.findByCommentIdAndAuthorUserId(commentId, userId)
-                .orElseThrow(() -> new NotFoundException("Comment with commentId=" + commentId
-                        + " and userId=" + userId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Comment with commentId=%s and userId=%s not found", commentId, userId)));
         if (LocalDateTime.now().isAfter(comment.getCreated().plusHours(2))) {
             throw new CommentException("Сan't delete a comment that was created more than 2 hours ago");
         }
@@ -82,8 +80,7 @@ public class CommentServiceImp implements CommentService {
     @Override
     public void reportComment(Long commentId, Long userId) {
         Comment comment = commentRepository.findByCommentIdAndAuthorUserId(commentId, userId)
-                .orElseThrow(() -> new NotFoundException("Comment with commentId=" + commentId
-                        + " and userId=" + userId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Comment with commentId=%s and userId=%s not found", commentId, userId)));
         Report report = new Report();
         report.setReportedUser(comment.getAuthor());
         report.setReportedMessage(comment.getText());
@@ -95,16 +92,14 @@ public class CommentServiceImp implements CommentService {
         if (commentRepository.existsByCommentIdAndAuthorUserId(commentId, userId)) {
             commentRepository.deleteById(commentId);
         } else {
-            throw new NotFoundException("Comment with commentId=" + commentId
-                    + " and userId=" + userId + " not found");
+            throw new NotFoundException(String.format("Comment with commentId=%s and userId=%s not found", commentId, userId));
         }
     }
 
     @Override
     public CommentDtoResponse updateCommentAdmin(Long userId, Long commentId, CommentDtoUpdate updateComment) {
         Comment comment = commentRepository.findByCommentIdAndAuthorUserId(commentId, userId)
-                .orElseThrow(() -> new NotFoundException("Comment with commentId=" + commentId
-                        + " and userId=" + userId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Comment with commentId=%s and userId=%s not found", commentId, userId)));
         comment.setState(CommentState.EDITED);
         return mapper.mapToCommentResponse(commentRepository.save(mapper.mapToComment(updateComment, comment)));
     }
@@ -112,8 +107,7 @@ public class CommentServiceImp implements CommentService {
     @Override
     public CommentDtoResponse getCommentPrivate(Long userId, Long commentId) {
         Comment comment = commentRepository.findByCommentIdAndAuthorUserId(commentId, userId)
-                .orElseThrow(() -> new NotFoundException("Comment with commentId=" + commentId
-                        + " and userId=" + userId + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Comment with commentId=%s and userId=%s not found", commentId, userId)));
         return mapper.mapToCommentResponse(comment);
     }
 
@@ -138,6 +132,6 @@ public class CommentServiceImp implements CommentService {
     @Override
     public CommentDtoResponse getCommentPublic(Long commentId) {
         return mapper.mapToCommentResponse(commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Comment with commentId=" + commentId + " not found")));
+                .orElseThrow(() -> new NotFoundException(String.format("Comment with commentId=%s not found", commentId))));
     }
 }

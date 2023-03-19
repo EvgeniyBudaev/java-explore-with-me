@@ -40,7 +40,7 @@ public class CompilationServiceImp implements CompilationService {
         if (compilations.existsById(compId)) {
             compilations.deleteById(compId);
         } else {
-            throw new NotFoundException("Compilation with id=" + compId + " was not found");
+            throw new NotFoundException(String.format("Compilation with id=%s was not found", compId));
         }
     }
 
@@ -48,7 +48,7 @@ public class CompilationServiceImp implements CompilationService {
     @Transactional
     public CompilationDtoResp updateCompilation(Long compId, UpdateCompilationRequest updateCompilation) {
         Compilation compilation = compilations.findById(compId)
-                .orElseThrow(() -> new NotFoundException("Compilation with id=" + compId + " was not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%s was not found", compId)));
         Set<Event> findEvents = events.findAllByEventIdIn(updateCompilation.getEvents());
         compilation = mapper.mapToCompilation(updateCompilation, compilation);
         compilation.setEvents(findEvents);
@@ -58,7 +58,7 @@ public class CompilationServiceImp implements CompilationService {
     @Override
     public CompilationDtoResp getCompilation(Long compId) {
         return mapper.mapToCompilationResp(compilations.findById(compId)
-                .orElseThrow(() -> new NotFoundException("Compilation with id=" + compId + " was not found")));
+                .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%s was not found", compId))));
     }
 
     @Override

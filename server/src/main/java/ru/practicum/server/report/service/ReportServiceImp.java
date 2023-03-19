@@ -17,6 +17,6 @@ public class ReportServiceImp implements ReportService {
     @Override
     public ReportDto getReportByUserId(Long userId) {
             return mapper.mapToReportDto(reportRepository.findByReportedUserUserId(userId)
-                    .orElseThrow(() -> new NotFoundException("Report with reported user id=" + userId + " not found")));
+                    .orElseThrow(() -> new NotFoundException(String.format("Report with reported user id=%s not found", userId))));
     }
 }
