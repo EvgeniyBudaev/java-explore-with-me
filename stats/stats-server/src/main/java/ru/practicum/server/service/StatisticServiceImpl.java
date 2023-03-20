@@ -38,12 +38,11 @@ public class StatisticServiceImpl implements StatisticService {
             viewStats = uris == null
                     ? statistics.getUniqueViewStatsByStartAndEndTime(parseStart, parseEnd)
                     : statistics.getUniqueUrisViewStatsByStartAndEndTime(parseStart, parseEnd, uris);
-            response = ListViewStats.builder().viewStats(viewStats).build();
         } else {
             viewStats = uris == null ? statistics.getViewStatsByStartAndEndTime(parseStart, parseEnd)
                     : statistics.getUrisViewStatsByStartAndEndTime(parseStart, parseEnd, uris);
-            response = ListViewStats.builder().viewStats(viewStats).build();
         }
+        response = ListViewStats.builder().viewStats(viewStats).build();
         return response;
     }
 }
