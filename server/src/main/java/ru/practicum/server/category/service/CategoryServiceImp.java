@@ -29,14 +29,14 @@ public class CategoryServiceImp implements CategoryService {
         if (categories.existsById(catId)) {
             return mapper.mapToNewCategoryDtoResp(categories.save(mapper.mapToCategory(updateCategory)));
         } else {
-            throw new NotFoundException(String.format("Category with id=%s was not found", catId));
+            throw new NotFoundException("Category with id=" + catId + " was not found");
         }
     }
 
     @Override
     public void deleteCategory(Long catId) {
         if (!categories.existsById(catId)) {
-            throw new NotFoundException(String.format("Category with id=%s was not found", catId));
+            throw new NotFoundException("Category with id=" + catId + " was not found");
         } else {
             //TODO связь с событием
             categories.deleteById(catId);
@@ -54,6 +54,6 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public NewCategoryDtoResp getCategoryById(Long catId) {
         return mapper.mapToNewCategoryDtoResp(categories.findById(catId)
-                .orElseThrow(() -> new NotFoundException(String.format("Category with id=%s was not found", catId))));
+                .orElseThrow(() -> new NotFoundException("Category with id=" + catId + " was not found")));
     }
 }
