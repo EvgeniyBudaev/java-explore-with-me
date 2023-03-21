@@ -1,4 +1,4 @@
-package ru.practicum.server.event.statclient;
+package ru.practicum.client.event.statclient;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

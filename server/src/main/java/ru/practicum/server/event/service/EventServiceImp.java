@@ -17,7 +17,7 @@ import ru.practicum.server.event.mapper.EventMapper;
 import ru.practicum.server.event.model.Event;
 import ru.practicum.server.event.model.QEvent;
 import ru.practicum.server.event.repository.EventRepository;
-import ru.practicum.server.event.statclient.StatisticClient;
+import ru.practicum.client.event.statclient.StatisticClient;
 import ru.practicum.server.handler.exception.AccessException;
 import ru.practicum.server.handler.exception.EventStateException;
 import ru.practicum.server.handler.exception.NotFoundException;
