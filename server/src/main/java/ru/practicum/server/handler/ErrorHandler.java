@@ -24,10 +24,10 @@ public class ErrorHandler {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<ApiError> handleException(MethodArgumentNotValidException e) {
+    private ResponseEntity<ApiError> handleException(MethodArgumentNotValidException exception) {
         ApiError errorResponse = ApiError.builder()
-                .errors(Arrays.asList(e.getStackTrace()))
-                .message(e.getFieldError().getDefaultMessage())
+                .errors(Arrays.asList(exception.getStackTrace()))
+                .message(exception.getFieldError().getDefaultMessage())
                 .reason("Incorrectly made request.")
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .timestamp(LocalDateTime.now().format(formatter))
@@ -36,10 +36,10 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    private ResponseEntity<ApiError> handleException(DataIntegrityViolationException e) {
+    private ResponseEntity<ApiError> handleException(DataIntegrityViolationException exception) {
         ApiError errorResponse = ApiError.builder()
-                .errors(Arrays.asList(e.getStackTrace()))
-                .message(e.getMessage())
+                .errors(Arrays.asList(exception.getStackTrace()))
+                .message(exception.getMessage())
                 .reason("Integrity constraint has been violated.")
                 .status(String.valueOf(HttpStatus.CONFLICT))
                 .timestamp(LocalDateTime.now().format(formatter))
@@ -50,10 +50,10 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    private ResponseEntity<ApiError> handleException(NotFoundException e) {
+    private ResponseEntity<ApiError> handleException(NotFoundException exception) {
         ApiError errorResponse = ApiError.builder()
-                .errors(Arrays.asList(e.getStackTrace()))
-                .message(e.getMessage())
+                .errors(Arrays.asList(exception.getStackTrace()))
+                .message(exception.getMessage())
                 .reason("The required object was not found.")
                 .status(HttpStatus.NOT_FOUND.toString())
                 .timestamp(LocalDateTime.now().format(formatter))
@@ -62,10 +62,10 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    private ResponseEntity<ApiError> handleException(ConstraintViolationException e) {
+    private ResponseEntity<ApiError> handleException(ConstraintViolationException exception) {
         ApiError errorResponse = ApiError.builder()
-                .errors(Arrays.asList(e.getStackTrace()))
-                .message(e.getMessage())
+                .errors(Arrays.asList(exception.getStackTrace()))
+                .message(exception.getMessage())
                 .reason("Invalid request parameters.")
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .timestamp(LocalDateTime.now().format(formatter))
@@ -74,10 +74,10 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler({AccessException.class, EventStateException.class})
-    private ResponseEntity<ApiError> handleExceptions(RuntimeException e) {
+    private ResponseEntity<ApiError> handleExceptions(RuntimeException exception) {
         ApiError errorResponse = ApiError.builder()
-                .errors(Arrays.asList(e.getStackTrace()))
-                .message(e.getMessage())
+                .errors(Arrays.asList(exception.getStackTrace()))
+                .message(exception.getMessage())
                 .reason("For the requested operation the conditions are not met.")
                 .status(HttpStatus.CONFLICT.toString())
                 .timestamp(LocalDateTime.now().format(formatter))
@@ -87,10 +87,10 @@ public class ErrorHandler {
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, EventUpdateException.class,
             MissingServletRequestParameterException.class})
-    private ResponseEntity<ApiError> handleException(Exception e) {
+    private ResponseEntity<ApiError> handleException(Exception exception) {
         ApiError errorResponse = ApiError.builder()
-                .errors(Arrays.asList(e.getStackTrace()))
-                .message(e.getMessage())
+                .errors(Arrays.asList(exception.getStackTrace()))
+                .message(exception.getMessage())
                 .reason("Incorrectly made request.")
                 .status(HttpStatus.BAD_REQUEST.toString())
                 .timestamp(LocalDateTime.now().format(formatter))

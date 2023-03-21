@@ -11,7 +11,6 @@ import ru.practicum.server.user.dto.ListNewUserRequestResp;
 import ru.practicum.server.user.dto.NewUserRequest;
 import ru.practicum.server.user.dto.NewUserRequestResponse;
 import ru.practicum.server.user.mapper.UserMapper;
-import ru.practicum.server.user.model.QUser;
 import ru.practicum.server.user.model.User;
 import ru.practicum.server.user.repository.UserRepository;
 
@@ -31,9 +30,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ListNewUserRequestResp getUsers(List<Long> ids, Pageable pageable) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        if (ids != null && !ids.isEmpty()) {
-            booleanBuilder.and(QUser.user.userId.in(ids));
-        }
         Page<User> page;
         if (booleanBuilder.getValue() != null) {
             page = usersRepository.findAll(booleanBuilder.getValue(), pageable);
@@ -51,7 +47,7 @@ public class UserServiceImpl implements UserService {
         if (usersRepository.existsById(userId)) {
             usersRepository.deleteById(userId);
         } else {
-            throw new NotFoundException("User with id=" + userId + " was not found");
+            throw new NotFoundException(String.format("User with id=%s was not found", userId));
         }
     }
 }
