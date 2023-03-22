@@ -13,6 +13,7 @@ import ru.practicum.server.compilation.dto.NewCompilationDto;
 import ru.practicum.server.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.server.compilation.mapper.CompilationMapper;
 import ru.practicum.server.compilation.model.Compilation;
+import ru.practicum.server.compilation.model.QCompilation;
 import ru.practicum.server.compilation.repository.CompilationRepository;
 import ru.practicum.server.event.model.Event;
 import ru.practicum.server.event.repository.EventRepository;
@@ -40,7 +41,7 @@ public class CompilationServiceImp implements CompilationService {
         if (compilations.existsById(compId)) {
             compilations.deleteById(compId);
         } else {
-            throw new NotFoundException(String.format("Compilation with id=%s was not found", compId));
+            throw new NotFoundException("Compilation with id=" + compId + " was not found");
         }
     }
 
@@ -48,7 +49,7 @@ public class CompilationServiceImp implements CompilationService {
     @Transactional
     public CompilationDtoResp updateCompilation(Long compId, UpdateCompilationRequest updateCompilation) {
         Compilation compilation = compilations.findById(compId)
-                .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%s was not found", compId)));
+                .orElseThrow(() -> new NotFoundException("Compilation with id=" + compId + " was not found"));
         Set<Event> findEvents = events.findAllByEventIdIn(updateCompilation.getEvents());
         compilation = mapper.mapToCompilation(updateCompilation, compilation);
         compilation.setEvents(findEvents);
@@ -58,13 +59,16 @@ public class CompilationServiceImp implements CompilationService {
     @Override
     public CompilationDtoResp getCompilation(Long compId) {
         return mapper.mapToCompilationResp(compilations.findById(compId)
-                .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%s was not found", compId))));
+                .orElseThrow(() -> new NotFoundException("Compilation with id=" + compId + " was not found")));
     }
 
     @Override
     public CompilationDtoList getCompilations(Boolean pinned, Pageable pageable) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         Page<Compilation> page;
+        if (pinned != null) {
+            booleanBuilder.and(QCompilation.compilation.pinned.eq(pinned));
+        }
         if (booleanBuilder.getValue() != null) {
             page = compilations.findAll(booleanBuilder.getValue(), pageable);
         } else {

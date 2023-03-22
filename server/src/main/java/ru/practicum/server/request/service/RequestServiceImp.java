@@ -30,9 +30,9 @@ public class RequestServiceImp implements RequestService {
     @Transactional
     public ParticipationRequestDto createRequest(Long userId, Long eventId) {
         Event event = events.findById(eventId)
-                .orElseThrow(() -> new NotFoundException(String.format("Event with id=%s was not found", eventId)));
+                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
         User requester = users.findById(userId)
-                .orElseThrow(() -> new NotFoundException(String.format("User with id=%s was not found", userId)));
+                .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
         validateCreatingRequest(event, userId);
         if (event.getParticipantLimit() == 0 || event.getParticipantLimit() > event.getConfirmedRequests()) {
             var newRequest = preparationRequest(event, requester);
@@ -57,7 +57,7 @@ public class RequestServiceImp implements RequestService {
                     .requests(mapper.mapToRequestDtoList(requests.findAllByRequesterUserId(userId)))
                     .build();
         } else {
-            throw new NotFoundException(String.format("User with id=%s was not found", userId));
+            throw new NotFoundException("User with id=" + userId + " was not found");
         }
     }
 
@@ -65,10 +65,10 @@ public class RequestServiceImp implements RequestService {
     @Transactional
     public ParticipationRequestDto canceledRequest(Long userId, Long requestId) {
         if (!users.existsById(userId)) {
-            throw new NotFoundException(String.format("User with id=%s was not found", userId));
+            throw new NotFoundException("User with id=" + userId + " was not found");
         }
         Request request = requests.findById(requestId)
-                .orElseThrow(() -> new NotFoundException(String.format("Request with id=%s was not found", requestId)));
+                .orElseThrow(() -> new NotFoundException("Request with id=" + requestId + " was not found"));
         Event event = request.getEvent();
         if (request.getStatus().equals(RequestStatus.CONFIRMED)) {
             event.setConfirmedRequests(event.getConfirmedRequests() - 1);
