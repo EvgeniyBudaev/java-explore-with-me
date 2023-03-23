@@ -2495,8 +2495,8 @@
         "type": "object",
         "properties": {
           "annotation": {
-            "maxLength": 2000,
-            "minLength": 20,
+            "maxLength": 500,
+            "minLength": 3,
             "type": "string",
             "description": "Краткое описание события",
             "example": "Сплав на байдарках похож на полет."
@@ -2635,8 +2635,8 @@
         "type": "object",
         "properties": {
           "annotation": {
-            "maxLength": 2000,
-            "minLength": 20,
+            "maxLength": 500,
+            "minLength": 3,
             "type": "string",
             "description": "Новая аннотация",
             "example": "Сап прогулки по рекам и каналам – это возможность увидеть Практикбург с другого ракурса"
@@ -2700,8 +2700,8 @@
         "type": "object",
         "properties": {
           "annotation": {
-            "maxLength": 2000,
-            "minLength": 20,
+            "maxLength": 500,
+            "minLength": 3,
             "type": "string",
             "description": "Новая аннотация",
             "example": "Сап прогулки по рекам и каналам – это возможность увидеть Практикбург с другого ракурса"

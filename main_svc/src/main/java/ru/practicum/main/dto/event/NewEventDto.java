@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Setter
 public class NewEventDto {
     @NotNull
-    @Size(min = 20, max = 2000)
+    @Size(min = 3, max = 500)
     private String annotation;
     @NotNull
     private Long category;
