@@ -50,8 +50,8 @@ create table if not exists events
     participant_Limit  bigint,
     published_On       timestamp without time zone,
     request_Moderation boolean,
-    state              varchar(120),
-    title              varchar(120),
+    state              varchar(40),
+    title              varchar(40),
     views              bigint,
     constraint PK_EVENT
         primary key (ID),

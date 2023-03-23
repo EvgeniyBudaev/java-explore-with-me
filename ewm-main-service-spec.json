@@ -2542,7 +2542,7 @@
             "default": true
           },
           "title": {
-            "maxLength": 120,
+            "maxLength": 40,
             "minLength": 3,
             "type": "string",
             "description": "Заголовок события",
@@ -2687,7 +2687,7 @@
             ]
           },
           "title": {
-            "maxLength": 120,
+            "maxLength": 40,
             "minLength": 3,
             "type": "string",
             "description": "Новый заголовок",
@@ -2753,7 +2753,7 @@
             ]
           },
           "title": {
-            "maxLength": 120,
+            "maxLength": 40,
             "minLength": 3,
             "type": "string",
             "description": "Новый заголовок",
