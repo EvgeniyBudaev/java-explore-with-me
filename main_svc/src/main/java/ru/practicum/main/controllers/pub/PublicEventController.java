@@ -2,7 +2,7 @@ package ru.practicum.main.controllers.pub;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.main.dto.EventFullDto;
+import ru.practicum.main.dto.event.EventFullDto;
 import ru.practicum.main.enums.SortValue;
 import ru.practicum.main.services.EventService;
 

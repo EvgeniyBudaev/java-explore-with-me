@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.practicum.main.dto.UserDto;
+import ru.practicum.main.dto.user.UserDto;
 import ru.practicum.main.exceptions.NameAlreadyExistException;
 import ru.practicum.main.mappers.UserMapper;
 import ru.practicum.main.repositories.UserRepository;
