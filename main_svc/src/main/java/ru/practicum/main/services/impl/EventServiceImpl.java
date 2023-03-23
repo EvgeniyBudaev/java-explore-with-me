@@ -56,7 +56,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventMapper.toEventModel(newEventDto);
         event.setCategory(category);
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotExistException("Can't create event, the user with id = " + userId + " doesn't exist"));
+                .orElseThrow(() -> new UserNotExistException(String.format("Can't create event, the user with id = %s doesn't exist", userId)));
         event.setInitiator(user);
         return eventMapper.toEventFullDto(eventRepository.save(event));
     }
@@ -69,7 +69,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto updateEvent(Long eventId, UpdateEventAdminDto updateEventAdminDto) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException("Can't update event with id = " + eventId + ", the event doesn't exist"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException(String.format("Can't update event with id = %s", eventId)));
         if (updateEventAdminDto == null) {
             return eventMapper.toEventFullDto(event);
         }
@@ -319,7 +319,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto getEvent(Long id, HttpServletRequest request) {
-        Event event = eventRepository.findByIdAndPublishedOnIsNotNull(id).orElseThrow(() -> new EventNotExistException("Can't find event with id = " + id + " event doesn't exist"));
+        Event event = eventRepository.findByIdAndPublishedOnIsNotNull(id).orElseThrow(() -> new EventNotExistException(String.format("Can't find event with id = %s event doesn't exist", id)));
         setView(event);
         sendStat(event, request);
         return eventMapper.toEventFullDto(event);
