@@ -23,7 +23,7 @@ public class NewEventDto {
     @NotNull
     private Long category;
     @NotNull
-    @Size(min = 500, max = 7000)
+    @Size(min = 20, max = 2000)
     private String description;
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Pattern.DATE)
