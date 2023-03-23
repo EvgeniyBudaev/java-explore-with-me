@@ -29,7 +29,7 @@ public class UpdateEventUserDto {
     private Long participantLimit;
     private Boolean requestModeration;
     private StateActionForUser stateAction;
-    @Size(min = 2, max = 40)
+    @Size(min = 2, max = 120)
     private String title;
 }
 
