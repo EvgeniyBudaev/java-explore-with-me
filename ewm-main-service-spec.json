@@ -2508,7 +2508,7 @@
             "example": 2
           },
           "description": {
-            "maxLength": 7000,
+            "maxLength": 2000,
             "minLength": 20,
             "type": "string",
             "description": "Полное описание события",
@@ -2648,7 +2648,7 @@
             "example": 3
           },
           "description": {
-            "maxLength": 7000,
+            "maxLength": 2000,
             "minLength": 20,
             "type": "string",
             "description": "Новое описание",
@@ -2713,7 +2713,7 @@
             "example": 3
           },
           "description": {
-            "maxLength": 7000,
+            "maxLength": 2000,
             "minLength": 20,
             "type": "string",
             "description": "Новое описание",
