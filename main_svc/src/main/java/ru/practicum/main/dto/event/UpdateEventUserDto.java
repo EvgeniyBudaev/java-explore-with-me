@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.main.enums.StateActionForUser;
 import ru.practicum.main.models.Location;
+import ru.practicum.main.constants.Pattern;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -21,7 +22,7 @@ public class UpdateEventUserDto {
     private Long category;
     @Size(min = 20, max = 7000)
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Pattern.DATE)
     private LocalDateTime eventDate;
     private Location location;
     private Boolean paid;

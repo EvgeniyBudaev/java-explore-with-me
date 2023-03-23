@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.client.StatClient;
+import ru.practicum.main.constants.Pattern;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.main.dto.event.EventFullDto;
@@ -46,7 +47,7 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final StatClient statClient;
     private final EntityManager entityManager;
-    private final String datePattern = "yyyy-MM-dd HH:mm:ss";
+    private final String datePattern = Pattern.DATE;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
 
     @Override
@@ -392,8 +393,8 @@ public class EventServiceImpl implements EventService {
             event.setViews(0L);
         }
 
-        String startTime = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String endTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String startTime = start.format(DateTimeFormatter.ofPattern(Pattern.DATE));
+        String endTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Pattern.DATE));
 
         List<ViewStatsDto> stats = getStats(startTime, endTime, uris);
         stats.forEach((stat) ->

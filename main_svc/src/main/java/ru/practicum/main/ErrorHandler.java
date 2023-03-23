@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.practicum.main.exceptions.*;
 import ru.practicum.main.models.ApiError;
+import ru.practicum.main.constants.Pattern;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @RestControllerAdvice
 public class ErrorHandler {
-    private final String datePattern = "yyyy-MM-dd HH:mm:ss";
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(Pattern.DATE);
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
