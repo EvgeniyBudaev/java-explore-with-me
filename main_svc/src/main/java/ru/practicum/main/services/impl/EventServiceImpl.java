@@ -135,9 +135,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new EventNotExistException(""));
 
         if (event.getPublishedOn() != null) {
-            if (event.getPublishedOn() != null) {
-                throw new AlreadyPublishedException("Event already published");
-            }
+            throw new AlreadyPublishedException("Event already published");
         }
 
         if (updateEventUserDto == null) {

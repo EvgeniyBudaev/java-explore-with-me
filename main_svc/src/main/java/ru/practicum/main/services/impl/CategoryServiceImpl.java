@@ -40,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategory(Long catId) {
-        Category category = categoryRepository.findById(Long.valueOf(catId))
+        Category category = categoryRepository.findById(catId)
                 .orElseThrow(() -> new CategoryNotExistException("Category doesn't exist"));
         return categoryMapper.toCategoryDto(category);
     }
