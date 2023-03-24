@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@PropertySource("application.properties")
+@PropertySource("client.properties")
 public class StatClient {
     private final String serverUrl;
     private final RestTemplate restTemplate;
