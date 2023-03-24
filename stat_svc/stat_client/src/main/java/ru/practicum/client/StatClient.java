@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStatsDto;
+import ru.practicum.exceptions.StatsException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,14 +43,12 @@ public class StatClient {
                 String.class, parameters);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        ViewStatsDto[] array;
 
         try {
-            array = objectMapper.readValue(response.getBody(), ViewStatsDto[].class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            return Arrays.asList(objectMapper.readValue(response.getBody(), ViewStatsDto[].class));
+        } catch (JsonProcessingException exception) {
+            throw new StatsException(String.format("Json processing error: %s", exception.getMessage()));
         }
 
-        return Arrays.asList(array);
     }
 }
