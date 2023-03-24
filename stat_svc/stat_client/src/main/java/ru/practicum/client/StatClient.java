@@ -55,6 +55,5 @@ public class StatClient {
         } catch (JsonProcessingException exception) {
             throw new StatsException(String.format("Json processing error: %s", exception.getMessage()));
         }
-
     }
 }
