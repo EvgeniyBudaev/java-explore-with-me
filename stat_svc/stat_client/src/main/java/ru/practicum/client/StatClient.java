@@ -2,7 +2,7 @@ package ru.practicum.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,11 +16,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class StatClient {
-    private final String serverUrl = "http://stats-server:9090";
+    private final String serverUrl;
     private final RestTemplate restTemplate;
 
+    public StatClient(@Value("${stats-server.url}") String serverUrl,  RestTemplate restTemplate) {
+        this.serverUrl = serverUrl;
+        this.restTemplate = restTemplate;
+    }
 
     public void addStats(EndpointHitDto endpointHitDto) {
         HttpHeaders headers = new HttpHeaders();
