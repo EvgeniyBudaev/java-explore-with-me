@@ -3,7 +3,6 @@ package ru.practicum.server.models;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.practicum.server.constants.Pattern;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +18,6 @@ public class EndpointHit {
     private String app;
     private String uri;
     private String ip;
-    @DateTimeFormat(pattern = Pattern.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 }

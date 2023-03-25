@@ -2,13 +2,12 @@ package ru.practicum.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStatsDto;
-import ru.practicum.exceptions.StatsException;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,14 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class StatClient {
-    private final String serverUrl;
+    private final String serverUrl = "http://stats-server:9090";
     private final RestTemplate restTemplate;
-
-    public StatClient(@Value("${stats-server.url}") String serverUrl,  RestTemplate restTemplate) {
-        this.serverUrl = serverUrl;
-        this.restTemplate = restTemplate;
-    }
 
     public void addStats(EndpointHitDto endpointHitDto) {
         HttpHeaders headers = new HttpHeaders();
@@ -47,11 +42,14 @@ public class StatClient {
                 String.class, parameters);
 
         ObjectMapper objectMapper = new ObjectMapper();
+        ViewStatsDto[] array;
 
         try {
-            return Arrays.asList(objectMapper.readValue(response.getBody(), ViewStatsDto[].class));
-        } catch (JsonProcessingException exception) {
-            throw new StatsException(String.format("Json processing error: %s", exception.getMessage()));
+            array = objectMapper.readValue(response.getBody(), ViewStatsDto[].class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
+
+        return Arrays.asList(array);
     }
 }
