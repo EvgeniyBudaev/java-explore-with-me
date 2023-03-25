@@ -24,6 +24,4 @@ public interface CommentService {
     CommentDto getCommentsByIdByAdmin(Long commentId);
 
     void deleteCommentByAdmin(Long commentId);
-
-
 }

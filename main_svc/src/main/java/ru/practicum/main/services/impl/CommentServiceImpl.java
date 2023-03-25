@@ -38,8 +38,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto createComment(NewCommentDto newCommentDto, Long userId, Long eventId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotExistException("Can't create comment, user with id= " + userId + "doesn't exist"));
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException("Can't create comment, event with id= " + eventId + "doesn't exist"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotExistException(String.format("Can't create comment, user with id=%s doesn't exist", userId)));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException(String.format("Can't create comment, event with id=%s doesn't exist", eventId)));
 
         Comment comment = new Comment();
         comment.setAuthor(user);
@@ -139,7 +139,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getCommentsByEventIdByAdmin(Long eventId, Integer from, Integer size) {
-        eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException("Can't receive comment by id, event with id= " + eventId + "doesn't exist"));
+        eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException(String.format("Can't receive comment by id, event with id=%s doesn't exist", eventId)));
         Pageable page = PageRequest.of(from / size, size);
         List<Comment> eventComments = commentsRepository.findAllByEvent_Id(eventId, page).toList();
         log.debug("Get comment`s list of event with ID = {}", eventId);
@@ -148,7 +148,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getCommentsByIdByAdmin(Long commentId) {
-        Comment comment = commentsRepository.findById(commentId).orElseThrow(() -> new CommentNotExistException("Can't receive comment by id, the comment with id= " + commentId + "doesn't exist"));
+        Comment comment = commentsRepository.findById(commentId).orElseThrow(() -> new CommentNotExistException(String.format("Can't receive comment by id, the comment with id=%s doesn't exist", commentId)));
         log.debug("Comment with ID = {} was found", commentId);
         return commentMapper.toCommentDto(comment);
     }
