@@ -1,17 +1,15 @@
-package ru.practicum.main.dto.category;
+package ru.practicum.main.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewCategoryDto {
-    @NotBlank
+@Getter
+@Setter
+public class UserShortDto {
+    private Long id;
     private String name;
 }

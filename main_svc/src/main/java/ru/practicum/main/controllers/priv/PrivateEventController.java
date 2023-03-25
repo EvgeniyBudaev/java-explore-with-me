@@ -4,13 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.main.dto.event.EventFullDto;
-import ru.practicum.main.dto.event.EventShortDto;
-import ru.practicum.main.dto.event.NewEventDto;
-import ru.practicum.main.dto.event.UpdateEventUserDto;
-import ru.practicum.main.dto.request.RequestDto;
-import ru.practicum.main.dto.request.RequestStatusUpdateDto;
-import ru.practicum.main.dto.request.RequestStatusUpdateResult;
+import ru.practicum.main.dto.*;
 import ru.practicum.main.services.EventService;
 import ru.practicum.main.services.RequestService;
 

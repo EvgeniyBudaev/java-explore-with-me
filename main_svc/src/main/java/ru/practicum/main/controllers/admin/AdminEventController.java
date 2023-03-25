@@ -3,8 +3,8 @@ package ru.practicum.main.controllers.admin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.main.dto.event.EventFullDto;
-import ru.practicum.main.dto.event.UpdateEventAdminDto;
+import ru.practicum.main.dto.EventFullDto;
+import ru.practicum.main.dto.UpdateEventAdminDto;
 import ru.practicum.main.enums.EventState;
 import ru.practicum.main.services.EventService;
 

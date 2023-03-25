@@ -3,9 +3,9 @@ package ru.practicum.main.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
-import ru.practicum.main.dto.event.EventFullDto;
-import ru.practicum.main.dto.event.EventShortDto;
-import ru.practicum.main.dto.event.NewEventDto;
+import ru.practicum.main.dto.EventFullDto;
+import ru.practicum.main.dto.EventShortDto;
+import ru.practicum.main.dto.NewEventDto;
 import ru.practicum.main.models.Event;
 
 import java.util.List;

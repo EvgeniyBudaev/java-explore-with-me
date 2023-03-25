@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.practicum.main.dto.user.UserDto;
+import ru.practicum.main.dto.UserDto;
 import ru.practicum.main.exceptions.NameAlreadyExistException;
 import ru.practicum.main.mappers.UserMapper;
 import ru.practicum.main.repositories.UserRepository;
@@ -23,11 +23,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         if (userRepository.existsByName(userDto.getName())) {
-            log.warn(String.format("Can't create user with name: %s, the name was used by another user", userDto.getName()));
-            throw new NameAlreadyExistException(String.format("Can't create user with name: %s, the name was used by another user",
-                    userDto.getName()));
+            log.warn("Can't create user with name: " + userDto.getName() + ", the name was used by another user");
+            throw new NameAlreadyExistException("Can't create user with name: "
+                    + userDto.getName() + ", the name was used by another user");
         }
-        log.debug(String.format("The user with name %s was created", userDto.getName()));
+        log.debug("The user with name " + userDto.getName() + "was created");
         return userMapper.toUserDto(userRepository.save(userMapper.toUserModel(userDto)));
     }
 

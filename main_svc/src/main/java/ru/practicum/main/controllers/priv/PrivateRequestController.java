@@ -3,7 +3,7 @@ package ru.practicum.main.controllers.priv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.main.dto.request.RequestDto;
+import ru.practicum.main.dto.RequestDto;
 import ru.practicum.main.services.RequestService;
 
 import java.util.List;

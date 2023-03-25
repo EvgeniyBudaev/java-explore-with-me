@@ -1,7 +1,7 @@
 package ru.practicum.main.mappers;
 
 import org.mapstruct.Mapper;
-import ru.practicum.main.dto.request.RequestDto;
+import ru.practicum.main.dto.RequestDto;
 import ru.practicum.main.models.Request;
 
 import java.util.List;
