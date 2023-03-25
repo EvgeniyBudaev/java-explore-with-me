@@ -4,10 +4,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.server.models.EndpointHit;
+import ru.practicum.server.constants.Pattern;
 
 
 @Mapper(componentModel = "spring")
 public interface EndpointHitMapper {
-    @Mapping(target = "timestamp", source = "timestamp", dateFormat = "yyyy-MM-dd HH:mm:ss")
+    @Mapping(target = "timestamp", source = "timestamp", dateFormat = Pattern.DATE)
     EndpointHit toEntity(EndpointHitDto endpointHitDto);
 }
