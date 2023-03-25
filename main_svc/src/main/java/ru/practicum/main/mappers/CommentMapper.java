@@ -2,7 +2,7 @@ package ru.practicum.main.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.practicum.main.dto.CommentDto;
+import ru.practicum.main.dto.comment.CommentDto;
 import ru.practicum.main.models.Comment;
 
 import java.util.List;

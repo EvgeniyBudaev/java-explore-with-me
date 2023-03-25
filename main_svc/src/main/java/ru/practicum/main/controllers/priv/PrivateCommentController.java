@@ -5,8 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.main.dto.CommentDto;
-import ru.practicum.main.dto.NewCommentDto;
+import ru.practicum.main.dto.comment.CommentDto;
+import ru.practicum.main.dto.comment.NewCommentDto;
 import ru.practicum.main.services.CommentService;
 
 import javax.validation.Valid;

@@ -1,4 +1,4 @@
-package ru.practicum.main.dto;
+package ru.practicum.main.dto.comment;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

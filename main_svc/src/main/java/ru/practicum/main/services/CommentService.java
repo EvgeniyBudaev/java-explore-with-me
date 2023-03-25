@@ -1,7 +1,7 @@
 package ru.practicum.main.services;
 
-import ru.practicum.main.dto.CommentDto;
-import ru.practicum.main.dto.NewCommentDto;
+import ru.practicum.main.dto.comment.CommentDto;
+import ru.practicum.main.dto.comment.NewCommentDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
