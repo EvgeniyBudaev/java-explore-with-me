@@ -1,4 +1,4 @@
-package ru.practicum.main.dto;
+package ru.practicum.main.dto.compilation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,13 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDto {
-    private Long id;
+public class NewCompilationDto {
+    private List<Long> events;
+    private Boolean pinned;
     @NotBlank
-    private String name;
+    private String title;
 }

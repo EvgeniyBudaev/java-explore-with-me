@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.main.enums.EventState;
+import ru.practicum.main.constants.Pattern;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -45,7 +46,7 @@ public class Event {
     private String title;
     private Long views;
     @Transient
-    private final String datePattern = "yyyy-MM-dd HH:mm:ss";
+    private final String datePattern = Pattern.DATE;
     @Transient
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
 
@@ -80,4 +81,5 @@ public class Event {
         this.title = title;
         this.views = views;
     }
+
 }

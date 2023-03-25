@@ -3,9 +3,9 @@ package ru.practicum.main.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.main.dto.RequestDto;
-import ru.practicum.main.dto.RequestStatusUpdateDto;
-import ru.practicum.main.dto.RequestStatusUpdateResult;
+import ru.practicum.main.dto.request.RequestDto;
+import ru.practicum.main.dto.request.RequestStatusUpdateDto;
+import ru.practicum.main.dto.request.RequestStatusUpdateResult;
 import ru.practicum.main.enums.RequestStatus;
 import ru.practicum.main.enums.RequestStatusToUpdate;
 import ru.practicum.main.exceptions.*;
@@ -108,13 +108,13 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<RequestDto> getCurrentUserRequests(Long userId) {
-        userRepository.findById(userId).orElseThrow(() -> new UserNotExistException("User with id=" + userId + " was not found"));
+        userRepository.findById(userId).orElseThrow(() -> new UserNotExistException(String.format("User with id=%s was not found", userId)));
         return requestMapper.toRequestDtoList(requestRepository.findAllByRequester(userId));
     }
 
     @Override
     public RequestDto cancelRequests(Long userId, Long requestId) {
-        Request request = requestRepository.findByRequesterAndId(userId, requestId).orElseThrow(() -> new RequestNotExistException("Request with id=" + requestId + " was not found"));
+        Request request = requestRepository.findByRequesterAndId(userId, requestId).orElseThrow(() -> new RequestNotExistException(String.format("Request with id=%s was not found", requestId)));
         request.setStatus(RequestStatus.CANCELED);
         return requestMapper.toRequestDto(requestRepository.save(request));
     }

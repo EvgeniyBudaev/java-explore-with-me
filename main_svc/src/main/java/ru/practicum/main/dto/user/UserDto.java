@@ -1,20 +1,21 @@
-package ru.practicum.main.dto;
+package ru.practicum.main.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewCompilationDto {
-    private List<Long> events;
-    private Boolean pinned;
+@Getter
+@Setter
+public class UserDto {
+    private Long id;
     @NotBlank
-    private String title;
+    private String name;
+    @Email
+    private String email;
 }

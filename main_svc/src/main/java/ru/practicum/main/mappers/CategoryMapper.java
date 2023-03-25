@@ -2,8 +2,8 @@ package ru.practicum.main.mappers;
 
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
-import ru.practicum.main.dto.CategoryDto;
-import ru.practicum.main.dto.NewCategoryDto;
+import ru.practicum.main.dto.category.CategoryDto;
+import ru.practicum.main.dto.category.NewCategoryDto;
 import ru.practicum.main.models.Category;
 
 import java.util.List;

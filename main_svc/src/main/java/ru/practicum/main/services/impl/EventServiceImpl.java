@@ -5,9 +5,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.client.StatClient;
+import ru.practicum.main.constants.Pattern;
 import ru.practicum.dto.EndpointHitDto;
 import ru.practicum.dto.ViewStatsDto;
-import ru.practicum.main.dto.*;
+import ru.practicum.main.dto.event.EventFullDto;
+import ru.practicum.main.dto.event.EventShortDto;
+import ru.practicum.main.dto.event.NewEventDto;
+import ru.practicum.main.dto.event.UpdateEventAdminDto;
+import ru.practicum.main.dto.event.UpdateEventUserDto;
 import ru.practicum.main.enums.EventState;
 import ru.practicum.main.enums.SortValue;
 import ru.practicum.main.enums.StateActionForAdmin;
@@ -42,7 +47,7 @@ public class EventServiceImpl implements EventService {
     private final UserRepository userRepository;
     private final StatClient statClient;
     private final EntityManager entityManager;
-    private final String datePattern = "yyyy-MM-dd HH:mm:ss";
+    private final String datePattern = Pattern.DATE;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(datePattern);
 
     @Override
@@ -56,7 +61,7 @@ public class EventServiceImpl implements EventService {
         Event event = eventMapper.toEventModel(newEventDto);
         event.setCategory(category);
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotExistException("Can't create event, the user with id = " + userId + " doesn't exist"));
+                .orElseThrow(() -> new UserNotExistException(String.format("Can't create event, the user with id = %s doesn't exist", userId)));
         event.setInitiator(user);
         return eventMapper.toEventFullDto(eventRepository.save(event));
     }
@@ -69,7 +74,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto updateEvent(Long eventId, UpdateEventAdminDto updateEventAdminDto) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException("Can't update event with id = " + eventId + ", the event doesn't exist"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException(String.format("Can't update event with id = %s", eventId)));
         if (updateEventAdminDto == null) {
             return eventMapper.toEventFullDto(event);
         }
@@ -135,9 +140,7 @@ public class EventServiceImpl implements EventService {
                 .orElseThrow(() -> new EventNotExistException(""));
 
         if (event.getPublishedOn() != null) {
-            if (event.getPublishedOn() != null) {
-                throw new AlreadyPublishedException("Event already published");
-            }
+            throw new AlreadyPublishedException("Event already published");
         }
 
         if (updateEventUserDto == null) {
@@ -319,7 +322,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto getEvent(Long id, HttpServletRequest request) {
-        Event event = eventRepository.findByIdAndPublishedOnIsNotNull(id).orElseThrow(() -> new EventNotExistException("Can't find event with id = " + id + " event doesn't exist"));
+        Event event = eventRepository.findByIdAndPublishedOnIsNotNull(id).orElseThrow(() -> new EventNotExistException(String.format("Can't find event with id = %s event doesn't exist", id)));
         setView(event);
         sendStat(event, request);
         return eventMapper.toEventFullDto(event);
@@ -390,8 +393,8 @@ public class EventServiceImpl implements EventService {
             event.setViews(0L);
         }
 
-        String startTime = start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        String endTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String startTime = start.format(DateTimeFormatter.ofPattern(Pattern.DATE));
+        String endTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(Pattern.DATE));
 
         List<ViewStatsDto> stats = getStats(startTime, endTime, uris);
         stats.forEach((stat) ->
