@@ -145,7 +145,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDto> getCommentsByEventIdByAdmin(Long eventId, Integer from, Integer size) {
         eventRepository.findById(eventId).orElseThrow(() -> new EventNotExistException(String.format("Can't receive comment by id, event with id=%s doesn't exist", eventId)));
         Pageable page = PageRequest.of(from / size, size);
-        List<Comment> eventComments = commentsRepository.findAllByEvent_Id(eventId, page).toList();
+        List<Comment> eventComments = commentsRepository.findAllByEvent_Id(eventId, page);
         log.debug("Get comment`s list of event with ID = {}", eventId);
         return commentMapper.toCommentDtos(eventComments);
     }
