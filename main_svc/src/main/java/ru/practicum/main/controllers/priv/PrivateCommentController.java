@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.main.constants.Pattern;
 import ru.practicum.main.dto.comment.CommentDto;
 import ru.practicum.main.dto.comment.NewCommentDto;
 import ru.practicum.main.services.CommentService;
@@ -50,10 +51,10 @@ public class PrivateCommentController {
                                                         @Positive
                                                         @RequestParam(value = "size", defaultValue = "10") Integer size,
                                                         @RequestParam(value = "createStart", required = false)
-                                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                                        @DateTimeFormat(pattern = Pattern.DATE)
                                                         LocalDateTime createStart,
                                                         @RequestParam(value = "createEnd", required = false)
-                                                        @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                                                        @DateTimeFormat(pattern = Pattern.DATE)
                                                         LocalDateTime createEnd) {
         return commentService.getUserCommentsByCreateTime(userId, createStart, createEnd, from, size);
     }
