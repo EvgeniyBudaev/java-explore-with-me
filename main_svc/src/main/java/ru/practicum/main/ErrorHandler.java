@@ -8,7 +8,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import ru.practicum.main.exceptions.*;
+import ru.practicum.main.exceptions.AlreadyPublishedException;
+import ru.practicum.main.exceptions.CategoryIsNotEmptyException;
+import ru.practicum.main.exceptions.CategoryNotExistException;
+import ru.practicum.main.exceptions.CommentConflictException;
+import ru.practicum.main.exceptions.CommentNotExistException;
+import ru.practicum.main.exceptions.CompilationNotExistException;
+import ru.practicum.main.exceptions.EventAlreadyCanceledException;
+import ru.practicum.main.exceptions.EventIsNotPublishedException;
+import ru.practicum.main.exceptions.EventNotExistException;
+import ru.practicum.main.exceptions.NameAlreadyExistException;
+import ru.practicum.main.exceptions.ParticipantLimitException;
+import ru.practicum.main.exceptions.RequestAlreadyConfirmedException;
+import ru.practicum.main.exceptions.RequestAlreadyExistException;
+import ru.practicum.main.exceptions.RequestNotExistException;
+import ru.practicum.main.exceptions.UserNotExistException;
+import ru.practicum.main.exceptions.WrongTimeException;
+import ru.practicum.main.exceptions.WrongUserException;
 import ru.practicum.main.models.ApiError;
 import ru.practicum.main.constants.Pattern;
 
@@ -23,6 +39,14 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ResponseBody
     public ApiError handleUserNameAlreadyExistException(final NameAlreadyExistException exception) {
+        return new ApiError(exception.getMessage(), "Integrity constraint has been violated.",
+                HttpStatus.CONFLICT.getReasonPhrase().toUpperCase(), LocalDateTime.now().format(dateFormatter));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseBody
+    public ApiError handleUserNameAlreadyExistException(final CommentConflictException exception) {
         return new ApiError(exception.getMessage(), "Integrity constraint has been violated.",
                 HttpStatus.CONFLICT.getReasonPhrase().toUpperCase(), LocalDateTime.now().format(dateFormatter));
     }
@@ -159,6 +183,13 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleCategoryNotExistException(final CategoryNotExistException exception) {
         return new ApiError("Can't delete category with this id", "Category with this id doesn't exist",
+                HttpStatus.NOT_FOUND.getReasonPhrase().toUpperCase(), LocalDateTime.now().format(dateFormatter));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleCommentNotExistException(final CommentNotExistException exception) {
+        return new ApiError(exception.getMessage(), "Category with this id doesn't exist",
                 HttpStatus.NOT_FOUND.getReasonPhrase().toUpperCase(), LocalDateTime.now().format(dateFormatter));
     }
 }
